@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -32,7 +33,7 @@ public class UserList extends AppCompatActivity {
         //création/ouverture de la base de données
         UsersDataSources source = new UsersDataSources(this);
         UserDAO dao=new UserDAO(source);
-        
+
         //création de la liste des utilisateurs pour l'affichage
         List<User> users=dao.readAll();
         User[] userTab=new User[users.size()];
@@ -47,6 +48,7 @@ public class UserList extends AppCompatActivity {
 
             //création d'une TableRow
             TableRow row = new TableRow(this);
+            row.setTag(userTab[i]);
 
             //création des TextView
             TextView name = new TextView(this);
@@ -65,6 +67,18 @@ public class UserList extends AppCompatActivity {
             row.addView(pre,new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT,1));
             row.addView(age,new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT,1));
             row.addView(metier,new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT,1));
+
+
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User userSel=(User)v.getTag();
+                    Intent modifierSupprimer = new Intent(UserList.this,ModifierSupprimer.class);
+                    Integer userId=userSel.getId();
+                    modifierSupprimer.putExtra("user", userId);
+                    startActivity(modifierSupprimer);
+                }
+            });
 
             //ajout de la TableRow au TableLayout
             table.addView(row,new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT));
