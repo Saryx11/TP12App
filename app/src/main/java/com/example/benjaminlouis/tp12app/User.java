@@ -19,6 +19,14 @@ public class User {
         this.id = id;
     }
 
+    public User(User user){
+        this.nom=user.getNom();
+        this.prenom=user.getPrenom();
+        this.age=user.getAge();
+        this.metier=user.getMetier();
+        this.id=user.getId();
+    }
+
     public String getNom() {
         return nom;
     }
