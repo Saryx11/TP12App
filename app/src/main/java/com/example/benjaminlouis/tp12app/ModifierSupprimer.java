@@ -51,13 +51,22 @@ public class ModifierSupprimer extends AppCompatActivity {
                 mod.setAge(Integer.parseInt(age.getText().toString()));
                 EditText metier=(EditText)findViewById(R.id.Metier);
                 mod.setMetier(metier.getText().toString());
-                mod.setId(((User)v.getTag()).getId());
-                
+                mod.setId((int)v.getTag());
+                UsersDataSources dataSource = new UsersDataSources(ModifierSupprimer.this);
+                UserDAO userDAO = new UserDAO(dataSource);
+                userDAO.update(mod);
+                Intent modif = new Intent(ModifierSupprimer.this,UserList.class);
+                /*modif.putExtra("modId",mod.getId());
+                modif.putExtra("modNom",mod.getNom());
+                modif.putExtra("modPrenom",mod.getPrenom());
+                modif.putExtra("modAge",mod.getAge());
+                modif.putExtra("modMetier",mod.getMetier());*/
+                startActivity(modif);
             }
         });
 
         //bouton supprimer
-        Button supprimer=(Button)findViewById(R.id.Modifier);
+        Button supprimer=(Button)findViewById(R.id.Supprimer);
         supprimer.setTag(id);
         supprimer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +80,12 @@ public class ModifierSupprimer extends AppCompatActivity {
                 sup.setAge(Integer.parseInt(age.getText().toString()));
                 EditText metier=(EditText)findViewById(R.id.Metier);
                 sup.setMetier(metier.getText().toString());
+                sup.setId((int)v.getTag());
+                UsersDataSources dataSource = new UsersDataSources(ModifierSupprimer.this);
+                UserDAO userDAO = new UserDAO(dataSource);
+                userDAO.delete(sup);
+                Intent del = new Intent(ModifierSupprimer.this,UserList.class);
+                startActivity(del);
             }
         });
 
